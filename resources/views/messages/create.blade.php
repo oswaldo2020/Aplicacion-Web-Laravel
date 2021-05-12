@@ -2,18 +2,26 @@
 
 @section('contenido')
 
-<h1>Contactos</h1>
-<h2>Escribeme</h2>
-@if( session()->has('info'))
-    <h3>{{session('info')}}</h3>
-@else
-<form method="POST" action="{{ route('mensajes.store')}}">
-    @include('messages.form', [
-        'message' => new App\Models\Message,
-        'showFields' => auth()->guest()
+{{-- <h1>Contactos</h1> --}}
 
-        ])
-</form>
-@endif
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-10 col-lg-6 mx-auto" >
+            <form class="bg-white shadow rounded py-3 px-4"
+            method="POST"
+            action="{{ route('mensajes.store') }}">
+
+                <h2 class="display-5">Escribenos</h2>
+                <hr>
+                    @include('messages.form',
+                     ['message' => new App\Models\Message,
+                     'showFields' => auth()->guest()
+                     ])
+
+                     {{-- <input class="btn btn-primary" type="submit" value="Guardar"> --}}
+            </form>
+        </div>
+    </div>
+</div>
 <hr>
 @stop

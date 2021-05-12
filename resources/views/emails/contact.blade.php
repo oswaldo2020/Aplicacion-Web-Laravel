@@ -8,5 +8,11 @@
 </head>
 <body>
     <h1>Te responderemos a la brevedad posible</h1>
+    <p>
+        Nombre: {{$data->nombre}} <br>
+        Nombre: {{$data->email}} <br>
+        Nombre: {{$data->mensaje}} <br>
+
+    </p>
 </body>
 </html>

@@ -1,5 +1,5 @@
 // const { Dropdown } = require('bootstrap');
-const mix = require('laravel-mix');
+let mix = require('laravel-mix');
 
 
 
@@ -9,7 +9,7 @@ mix.js('resources/js/app.js', 'public/js')
 mix.scripts([
     'node_modules/jquery/dist/jquery.js',
     'node_modules/bootstrap/dist/js/bootstrap.js'
-], 'public/js/all.js', './');
+], 'public/js/app.js', './');
 
 // });
 mix.browserSync({
@@ -17,7 +17,7 @@ proxy:'appnew.test'
 
 });
 
-// if (mix.inProduction())
-// {
-//     mix.version();
-// }
+if (mix.inProduction())
+{
+    mix.version();
+}

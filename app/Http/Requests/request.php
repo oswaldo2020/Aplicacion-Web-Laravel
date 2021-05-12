@@ -13,7 +13,7 @@ class request extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class request extends FormRequest
     public function rules()
     {
         return [
-            //
+            // 'nombre' => 'required',
+            // 'codigo' => 'required',
+            // 'ultimo' => 'required',
+            // 'credito_original' =>'required',
+            // 'ultimo_abono' => 'required',
         ];
     }
 }

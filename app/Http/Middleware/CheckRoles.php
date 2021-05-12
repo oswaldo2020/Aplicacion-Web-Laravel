@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class CheckRoles
 {
@@ -18,10 +18,10 @@ class CheckRoles
     public function handle(Request $request, Closure $next)
     {
 
-        $roles = array_slice(func_get_args(), 2);
+        $roles = array_slice(func_get_args(), 2 );
         // dd($roles);
 
-        if (auth()->user()->hasRoles($roles))
+        if (auth()->user()->hasRoles($roles) )
         {
             return $next($request);
         }

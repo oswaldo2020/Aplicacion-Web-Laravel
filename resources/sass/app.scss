@@ -1,11 +1,18 @@
 // // Fonts
-// @import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css?family=Nunito');
 
 // // Variables
-// @import 'variables';
+@import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.h-screen {
+
+    height: 100vh;
+}
+
+
 // $color:#005400;
 // nav {
 // width:100%;
@@ -13,10 +20,6 @@
 // justify-content: space-around;
 // }
 
-// .active{
-//     text-decoration: none;
-//     color: green;
-// }
 // .error{
 //     color:red;
 //     font-size: 6 px;

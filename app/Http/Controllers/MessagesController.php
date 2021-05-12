@@ -3,16 +3,22 @@
 namespace App\Http\Controllers;
 
 use DB;
-use Mail;
+use App\Models\User;
+use Illuminate\Http\Request;
+use App\Repositories\Messages;
 use App\Models\Message;
 use App\Providers\MessageWasReceived;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\Http\Requests\CreateMessageRequest;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 
 class MessagesController extends Controller
 {
-    function __construct()
+protected $messages;
+
+    function __construct(Messages $messages)
     {
+        $this->messages = $messages;
         $this->middleware('auth', ['except' => ['create', 'store']]);
     }
     /**
@@ -22,10 +28,12 @@ class MessagesController extends Controller
      */
     public function index()
     {
+        $messages = $this->messages->getPaginated();
 
-        $messages = Message::with(['user','note','tags'])->get();
         return view('messages.index', compact('messages'));
+
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -41,23 +49,22 @@ class MessagesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\CreateMessageRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateMessageRequest $request)
     {
-       $message = Message::create($request->all());
+        // dd($request);
 
-       if(auth()->check())
-       {
-           auth()->user()->messages()->save($message);
-       }
-    //    $message->user_id = auth()->id();
-    //     $message->save();
+        $message = $this->messages->store($request);
 
         event(new MessageWasReceived($message));
-        return redirect()->route('mensajes.create')->with('info', 'Hemos recibido tu mensaje');
+        return redirect()->route('home')->with('info', 'Hemos recibido tu mensaje');
+
+        // return redirect()->route('mensajes.index');
     }
+
+
 
     /**
      * Display the specified resource.
@@ -69,7 +76,12 @@ class MessagesController extends Controller
     {
         // return "Este es el mensaje con el id". $id;
         // $message = DB::table('messages')->where('id', $id)->first();
-        $message = Message::findOrFail($id);
+
+        $message = Cache::tags('messages')->rememberForever("messages.{$id}", function() use ($id) {
+            return Message::findOrFail($id);
+        });
+
+
         return view('messages.show', compact('message'));//
         // , compact('message')
     }
@@ -82,7 +94,10 @@ class MessagesController extends Controller
      */
     public function edit($id)
     {
-        $message = Message::findOrFail($id);
+        $message = Cache::tags('messages')->rememberForever("messages.{$id}", function() use ($id) {
+            return Message::findOrFail($id);
+        });
+
         // $message = DB::table('messages')->where('id', $id)->first();
         return view('messages.edit', compact('message'));
     }
@@ -94,7 +109,7 @@ class MessagesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CreateMessageRequest $request, $id)
     {
         // $message = DB::table('messages')->where('id', $id)->update([
         //     "nombre" => $request->input('nombre'),
@@ -102,8 +117,8 @@ class MessagesController extends Controller
         //     "mensaje" => $request->input('mensaje'),
         //     "updated_at" => Carbon::now(),
         // ]);
-
-        Message::findOrFail($id)->update($request->all());
+        Message::findOrFail($id)->update($request->validated());
+        Cache::tags('messages')->flush();
 
             return redirect()->route('mensajes.index');
     }
@@ -118,7 +133,7 @@ class MessagesController extends Controller
     {
         // $message = DB::table('messages')->where('id', $id)->delete();
         Message::findOrFail($id)->delete();
-
+        Cache::tags('messages')->flush();
         return redirect()->route('mensajes.index');
 
     }

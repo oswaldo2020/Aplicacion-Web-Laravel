@@ -22,16 +22,17 @@
                 @if ($message->user_id)
                     <td>
                         <a href="{{ route('usuarios.show', $message->user_id) }}">
-                            {{ $message->user->name }}
+                            {{ $message->present()->userName() }}
                         </a>
                     </td>
-                    <td>{{ $message->user->email }}</td>
+                    <td>{{ $message->present()->userEmail() }}</td>
                 @else
                     <td>{{ $message->nombre}}</td>
                     <td>{{ $message->email}}</td>
                 @endif
                 <td>
                     <a href="{{route('mensajes.show', $message->id)}}">{{ $message->mensaje}}</a>
+                    {{-- {{ $message->present()->link() }} --}}
                 </td>
 
                 <td>{{ $message->note ? $message->note->body : ''}}</td>
@@ -49,6 +50,8 @@
 
             </tr>
         @endforeach
+
+{!! $messages->fragment('hash')->appends(request()->query())->links('pagination::simple-bootstrap-4')!!}
     </tbody>
 
 </table>

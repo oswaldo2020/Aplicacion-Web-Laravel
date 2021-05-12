@@ -1,25 +1,23 @@
 @extends('layout')
 
 @section('contenido')
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <img class="img-fluid mb-4" src="/img/about.svg" alt="Tu mejor opción">
+        </div>
+        <div class="col-12 col-lg-6">
+            <h1 class="display-4 text-primary">Tu mejor opción</h1>
+            <p class="lead text-secondary">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                Odio tenetur rerum aspernatur nulla nemo dicta,
+                iure ipsa non, libero quod, nobis modi deserunt.
+                Molestias, tenetur temporibus. Aliquid non tenetur illum.</p>
+                <a class="btn btn-link btn-lg"
+                href="{{ route('mensajes.create')}}">Contáctanos</a>
+        </div>
 
-    <h1>Saludos a {{$nombre}}</h1>
-    <ul>
-        @forelse ($consolas as $consola)
-            <li>{{ $consola}}</li>
 
-        @empty
-        <p>No hay consolas</p>
-
-        @endforelse
-{{--
-        @if (count($consolas) === 1)
-        <p>Solo tienes una consola</p>
-        @elseif(count($consolas) > 1)
-        <p>Tienes varias consolas</p>
-        @else
-            <p>No tienes ninguna consola</p>
-        @endif --}}
-    </ul>
-
+    </div>
+</div>
 
 @stop

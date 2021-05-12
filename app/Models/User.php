@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Note;
+use App\Casts\Options;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -23,7 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id',
+
     ];
 
     /**
@@ -43,6 +44,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'options' => Options::class
+
     ];
 
     public function setPasswordAttribute($password)

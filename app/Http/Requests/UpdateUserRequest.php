@@ -23,7 +23,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
-
+        // dd($this->route('usuario'));
         return [
             'name' => 'required',
             'email' => 'required|unique:users,email,'. $this->route('usuario')

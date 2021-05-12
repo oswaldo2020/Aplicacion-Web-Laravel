@@ -6,7 +6,7 @@
 
 <table class="table">
     <tr>
-        <th>Nombre</th>
+        <th>Nombre:</th>
         <td>{{ $user->name}}</td>
     </tr>
     <tr>

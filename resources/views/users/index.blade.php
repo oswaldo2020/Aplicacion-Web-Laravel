@@ -1,8 +1,10 @@
 @extends('layout')
 
 @section('contenido')
-<h1>Usuarios</h1>
-<a class="btn btn-primary pull-right" href="{{ route('usuarios.create')}}">Crear nuevo usuario</a>
+<div class="row justify-content-between">
+    <h1>Usuarios</h1>
+    <a class="btn btn-primary my-auto" href="{{ route('usuarios.create')}}">Crear nuevo usuario</a>
+</div>
 <table class="table">
     <thead>
         <tr>

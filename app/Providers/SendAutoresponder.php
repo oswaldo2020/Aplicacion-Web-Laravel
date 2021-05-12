@@ -3,11 +3,12 @@
 namespace App\Providers;
 
 use Mail;
+use App\Mail\TuMensajeFueRecibido;
 use App\Providers\MessageWasReceived;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class SendAutoresponder
+class SendAutoresponder implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -27,9 +28,13 @@ class SendAutoresponder
      */
     public function handle(MessageWasReceived $event)
     {
+        // dd($event->message);
         $message = $event->message;
-        Mail::send('emails.contact',['msg' => $message], function($m) use ($message){
-            $m->to($message->email, $message->name)->subject('Tu mensaje fue recibido');
-        });
+
+        if(auth()->check()){
+            $message->nombre  = auth()->user()->name;
+            $message->email = auth()->user()->email;
+        }
+        Mail::to($message->email)->send(new TuMensajeFueRecibido($message));
     }
 }

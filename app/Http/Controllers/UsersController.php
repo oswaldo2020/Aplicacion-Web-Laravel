@@ -95,11 +95,10 @@ class UsersController extends Controller
      */
     public function update(UpdateUserRequest $request, $id)
     {
-
         $user = User::findOrFail($id);
-
         $this->authorize($user);
-
+        // $request->file('avatar')->store('public');
+        // return $request->all();
         $user->update($request->only('name','email'));
         $user->roles()->sync($request->roles);
 
@@ -119,4 +118,21 @@ class UsersController extends Controller
         $user->delete();
         return back();
     }
+       /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\CreateUserRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeajax(CreateUserRequest $request)
+    {
+        $user = User::create($request->all());
+        $user->roles()->attach($request->roles);
+
+        return redirect()->route('usuarios.index');
+    }
+
+
+
 }
+

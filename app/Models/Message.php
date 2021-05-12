@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Models\Note;
+use App\Presenters\MessagePresenter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 
 {
-    protected $fillable = ['nombre', 'email', 'mensaje'];
+    protected $guarded = [];
     use HasFactory;
 
     public function user()
@@ -25,4 +26,10 @@ class Message extends Model
     {
         return $this->morphToMany(Tag::class, 'taggable');
     }
+
+    public function present()
+    {
+        return new MessagePresenter($this);
+    }
+
 }

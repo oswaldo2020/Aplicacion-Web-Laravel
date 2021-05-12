@@ -8,7 +8,8 @@
 
 @endif
 
-<form method="POST" action="{{ route('usuarios.update', $user->id)}}">
+<form method="POST" action="{{ route('usuarios.update', $user->id)}}"
+    enctype="multipart/form-data">
     {!! method_field('PUT')!!}
     @include('users.form')
 

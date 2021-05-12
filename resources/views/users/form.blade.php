@@ -1,4 +1,11 @@
 {!! csrf_field() !!}
+{{-- <p><label for="avatar">
+
+    <input  type="file" name="avatar"> --}}
+
+    {{-- {!!$errors->first('name', '<span class=error>:message</span>')!!} --}}
+</label></p>
+
 <p><label for="nombre">
     Nombre
     <input class="form-control" type="text" name="name" value="{{ $user->name ?? old('name')}}">
@@ -31,7 +38,7 @@
 <label class="form-check-label">
     <input
     type="checkbox"
-    class="form-check-input"
+    class="form-check-input "
     value="{{$id}}"
     {{ $user->roles->pluck('id')->contains($id) ? 'checked' : ''}}
     id=""

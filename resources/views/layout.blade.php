@@ -3,70 +3,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet"href="/css/app.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{mix('css/app.css')}}">
+    <link rel="stylesheet" href="css/select2.min.css">
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+    <script src="{{ mix ('js/app.js')}}" defer></script>
+    <script src="js/select2.min.js" defer></script>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
 
     <title>Mi sitio</title>
 </head>
 <body>
-<header>
-        <?php function activeMenu($url){
-
-            return request()->is($url)? 'active' : '';
-        } ?>
-<nav class="navbar navbar-expand-sm navbar-light bg-light">
-
-    <div class="collapse navbar-collapse" id="collapsibleNavId">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item active nav-link {{ activeMenu('/') }}">
-                <a  href="{{ route ('home')}}">Inicio</a>
-            </li>
-            <li class=" nav-item active nav-link {{ activeMenu('saludo/*') }}" >
-                <a href="{{ route ('saludos', 'Oswaldo')}}">Saludo</a>
-            </li>
-            <li class=" nav-item active nav-link {{ activeMenu('mensajes/create') }}">
-                <a href="{{ route('mensajes.create')}}">Contactos</a>
-            </li>
-            @if (auth()->check() )
-                <li class=" nav-item active nav-link {{ activeMenu('mensajes*') }}">
-                    <a href="{{ route('mensajes.index')}}">Mensajes</a>
-                </li>
-                @if (auth()->user()->hasRoles( ['admin']) )
-                    <li class=" nav-item active nav-link {{ activeMenu('usuarios*') }}">
-                        <a href="{{ route('usuarios.index')}}">Usuarios</a>
-                    </li>
-                @endif
+    <div id="app" class="d-flex flex-column h-screen-auto justify-content-between">
+        <header>
+            @include('partials.nav')
+            @if (session()->has('info'))
+                <div class="alert alert-success">{{session('info')}} </div>
             @endif
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            @if (auth()->guest())
-                <li class="{{ activeMenu('login') }}">
-                    <a  href="/login">Login</a>
-                </li>
-            @else
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->name}}</a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownId">
-                        <li><a class="dropdown-item" href="/usuarios/{{ auth()->id() }}/edit">Mi cuenta</a></li>
-                        <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
-                        {{-- <a class="dropdown-item" href="#">Action 2</a> --}}
-                    </ul>
-                </li>
-            @endif
-        </ul>
+            @include('partials.session-status')
+        </header>
+        <main class="py-3">
+            <div class="container">
+                @yield('contenido')
+            </div>
+        </main>
+        <footer class="bg-white text-center text-black-50 py-3 shadow fixed-bottom">
+            {{ config ('app.name')}} | Copyright {{date ('Y')}}
+        </footer>
     </div>
-</nav>
 
-</header>
-    <div class="container">
-
-        @yield('contenido')
-        <footer>Copyright {{date ('Y')}}</footer>
-
-    </div>
 </body>
-
-<script src="/js/all.js"></script>
 </html>
+
+<script type="text/javascript">
+    $(document).ready(funccion(){
+        $('#controlBuscador').select2();
+    });
+</script>
+
+
 
